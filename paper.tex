@@ -81,7 +81,6 @@ While geometric constraints have been shown to work well, they are often suscept
 
 This paper is structured as follows: In Section~\ref{algorithm} we introduce the \emph{Fast-Match} algorithm. Section~\ref{experiments} outlines the experimental setup. In Section~\ref{results} we discuss the results before concluding in Section~\ref{conclusion}.
 
-
 \begin{figure}[tb]
     \centering
     \begin{subfigure}[t]{0.5\columnwidth}
@@ -91,30 +90,23 @@ This paper is structured as follows: In Section~\ref{algorithm} we introduce the
     \begin{subfigure}[t]{0.5\columnwidth}
         \includegraphics[width=1\columnwidth]{images/Illinois-ratiomatch}
     \end{subfigure}%
-    \caption{The 50 best matches by the proposed \emph{Fast-Match} algorithm (left) and the \emph{Ratio-Match} algorithm \cite{lowe2004sift} (right). The lines between the image pairs denote a match as proposed by the algorithm. For \emph{Fast-Match} the zones of the right image where features were computed has been marked with a blue square.}
+    \caption{The 50 best matches by the proposed \emph{Fast-Match} algorithm (left) and the \emph{Ratio-Match} algorithm \cite{lowe2004sift} (right). The lines between the image pairs denote a match as proposed by the algorithm. For \emph{Fast-Match} the zones of the right image where local features were computed has been marked with a blue square.}
     \label{fig:match_example}
 \end{figure}
 
 \section{Matching Fast and Slow}
 \label{algorithm}
-
+%
 In this chapter we will introduce the fundamentals of \emph{Fast-Match} and motivate the design choices as we go. The algorithm is made of 3 components; finding seeds, finding matches, and exploring for other places where matches might be.
 
 \subsection{Considerations}
 \label{considerations}
-
+%
 If we set out to design a truly fast matching algorithm, we cannot rely just on optimizing the matching step once the descriptors from both images have been found and computed. As illustrated in Figure~\ref{fig:timings} finding and computing descriptors can easily account for 80\% of the time spent matching for bigger images. For this reason \emph{Fast-Match} is designed to only compute features for the part of the image we hope to match. 
 
 The \emph{Fast-Match} algorithm is demonstrated in Algorithm~\ref{alg-fast}. Given a \emph{query image} and a \emph{target image} that we intend to match and a confidence threshold $\tau$, we obtain a set of seed matches from the two images. For each seed match we look at the matched position in \emph{query image} and \emph{target image} and find a set of matches. We save these matches and their confidence scores and for those of them that pass the confidence threshold $\tau$ we obtain another set of seed matches. In this way we iterate until we have no more seed matches and return the matches and their confidence scores. In an intuitive sense $\tau$ serves as a parameter directing the thoroughness of the algorithm, i.e. how much time we spend matching, while the final precision and recall can be adjusted by thresholding the matches on their confidence scores at the end.
 
-We introduce two variations of the algorithm, the a \emph{general} and the \emph{retrieval} variation. The \emph{retrieval} variation assumes that we know one of the images that we intend to match ahead of time and can do some off-line computations. For the \emph{general} variation we make those computations on the fly instead and do not assume that anything can be pre-computed. in In Figure~\ref{fig:match_example} we illustrate the result of matching \emph{Fast-Match} on two images compared with the result of \emph{Ratio-Match} for the same images.
-
-\begin{figure}[tb]
-    \centering
-    \includegraphics[width=1\columnwidth]{images/timings}
-    \caption{The duration in seconds of different variations of \emph{Fast-Match} and \emph{Ratio-Match}. The top plot shows results for two 10~MPixel images two 3~Mpixel images is used for the comparison at the bottom. In both plots from left to right: 1.~The proposed \emph{Fast-Match} algorithm with one image pre-cached. 2.~The proposed \emph{Fast-Match} algorithm with no pre-cached images. 3-5.~ \emph{Ratio-Match} using respectively Flann KD-Tree, KGraph and Brute-Force to find nearest neighbours}
-    \label{fig:timings}
-\end{figure}
+We introduce two variations of the algorithm, the a \emph{general} and the \emph{retrieval} variation. The \emph{retrieval} variation assumes that we know one of the images that we intend to match ahead of time and can do some off-line computations. For the \emph{general} variation we make those computations on the fly instead and do not assume that anything can be pre-computed. 
 
 \begin{algorithm}[htb]
 \caption{Fast-Match}
@@ -139,10 +131,12 @@ We introduce two variations of the algorithm, the a \emph{general} and the \emph
 
 \subsection{Initiating Seeds}
 \label{seeds}
+%
 To obtain a set of initial seed matches several strategies can be used depending on the use case. For the case of matching a pair of two images we can get a rough group of seed matches by matching the thumbnails of the two images with for example \emph{Ratio-Match}. However if we were matching images in a series, such as frames from a movie we could instead make use of a subset of the matches from the last frame to seed \emph{Fast-Match} on the next. In practice we have found it efficient to resize both images to thumbnails of 300 by 300 pixels and use ratio match to obtain a set of matches and ratios that we then threshold with the confidence threshold $\tau$ to obtain the initial seed matches.
 
 \subsection{Collecting Matches and Computing Confidence}
 \label{collection}
+%
 If a seed match yields a connection between two points, $p_q$ in the \emph{query image} and $p_t$ in the \emph{target image}, then we are interested in collecting all matches between the regions $R_q$ and $R_t$ centered around $p_q$ and $p_t$ respectively. From each region we can extract a set of feature points between which we try to find a set of matches $M_{qt} $ and a set of confidence scores, $C_{qt}$.
 
 Lowe and others have shown that the distance between two SIFT descriptors is much less indicative of a true correspondence than the ratio between the best and second best match \cite{lowe2004sift,mikolajczyk2005performance,moreels2007evaluation,rabin2009statistical}. This ratio is more formally defined as follows: If we let $f_q$ be a feature in the \emph{query image} and $f_t, f_b$ be the two nearest neighbours of $f_q$ in the \emph{target image} then the ratio $r$ is defined as follows:
@@ -165,34 +159,36 @@ In the case that we know the image beforehand, we can further optimize this step
 
 \subsection{Exploring for Matches}
 \label{exploring}
+%
 In each iteration we compute a new set of seed matches, i.e. positions that might yield more matches in the image. For each region $R_i$ evaluated during the collection step we now have a set of matches, $M_i$ and a set of confidences, $C_i$ that we can make use to predict whether the neighbourhood of $R_i$ is worth exploring.
 
-There are many possible heuristics for predicting possible regions including using local and global epipolar assumptions and partial graph isomorphisms. However for the sake of simplicity and speed we have chosen a straightforward approach based on weak angular assumptions and illustrated in Figure~\ref{fig:exploration}. Assuming that the \emph{target image} has been cached either in advance or before the matching step, the blue shaded areas show $R_q$ and $R_t$ for a given seed match. In the \emph{target image} we collect all features in a given radius while we compute features in the rectangular $R_q$ in the \emph{query image}. For performance reasons we compute all features in the blue square but match only the features inside the shaded area. Next a match is found in the collection step between $f_q$ and $f_t$. Based on the position of $f_q$ in $R_q$ we select three areas with potential for more matches. The center of each is matched with the center position $f_t$ to produce three seed matches for the next iteration.
+There are many possible heuristics for predicting possible regions including using local and global epipolar assumptions and partial graph isomorphisms. However for the sake of simplicity and speed we have chosen a straightforward approach based on weak angular assumptions and illustrated in Figure~\ref{fig:exploration}. Assuming that the \emph{target image} has been cached either in advance or before the matching step, the blue shaded areas show $R_q$ and $R_t$ for a given seed match. In the \emph{target image} we collect all features in a given radius while we compute features in the rectangular $R_q$ in the \emph{query image}. For performance reasons we compute all features in the blue square but match only the features inside the shaded area. Next a match is found in the collection step between $f_q$ and $f_t$. Based on the position of $f_q$ in $R_q$ we select three areas with potential for more matches. The center of each is matched with the center position $f_t$ to produce three seed matches for the next iteration. In Figure~\ref{fig:match_example} we illustrate this process in the \emph{Fast-Match} image pair. The \emph{query image} to the right in the figure has a small blue square for each region that has been used while matching the two images..
 
 In practice it is necessary that these squares overlap in order to detect features lying close to the edges. This incurs a bit of overhead which is minimized by only collecting features for groups of 9 squares. In order to avoid computing the same matches or features twice, quite a bit of care has to be expended making sure that results are properly cached. A matrix containing `bins' of features can conveniently be used to store features from different image regions. Similarly a hash-set is suitable for keeping track of which regions have already been matched and which matches have already been found.
 
 \subsection{Computational Complexity}
 \label{complexity}
+%
 The difference between the \emph{general} and \emph{retrieval} variation of \emph{Fast-Match} consists in whether we compute the features in the \emph{target image} (general) or if we presume the features are computed offline (retrieval). Computing the features is linear in the amount of features, while finding $d(f_q, f_b)$ for all $n$ features in the \emph{target image} can be done in $O(n\log n)$ using metric trees. 
 
 Once the features and their distances have been computed, the algorithm iteratively finds new seed matches based on previous sets of seed matches. For each seed match we collect new matches, calculate confidence scores and obtain new seed matches. Each of these steps varies only with the local region size which is constant. As a consequence the running time is linear in the amount of possible seed matches.
 
-We will show that the amount of possible seed matches is on average linear in the amount of image features and provide an upper bound for the probability that it is not. We assume that outside of true correspondences, features have better or at least equally good matches in terms of confidence in the image they come from. More rigorously put: For any feature in the target image $f_t$ let $f_i$ be the best matching feature from either image which is not a true correspondence. Let $A_{ti}$ be the event that $f_i$ is found in the \emph{query image}, then $\mathbb{P}(A_{ti}) \leq 0.5$.
+We will show that the amount of possible seed matches is on average linear in the amount of image features and provide an upper bound for the probability that it is not. We assume that outside of true correspondences, features have better or at least equally good matches in terms of confidence in the image they come from. More rigorously put: For any feature in the target image $f_t$ let $f_1, f_2, \ldots$ be the best, second best, etc matching feature from either image which is not a true correspondence. Let $A_{ti}$ be the event that $f_i$ is found in the \emph{query image}, then $\mathbb{P}(A_{ti}) \leq 0.5$ and $A_{ti}$ is independent from $A_{tj}$ when $i \ne j$.
 
-For a given feature in the \emph{target image} $f_t$ and its nearest neighbour in the \emph{target image}, $f_b$, we can let define the stochastic variable $X_t$ as:
+For a given feature in the \emph{target image} $f_t$, its nearest neighbour in the \emph{target image}, $f_b$ and $F_{query}$, the set of features in the \emph{query image}, we can define the stochastic variable $X_t$ as:
 \begin{align}
     X_t = \left| \{ \, f_q \, \middle| \, f_q \in F_{query},\, d(f_q, f_t) < d(f_q, f_b) \} \right|
 \end{align}
-Here $F_{query}$ is the set of features in the \emph{query image}. That is, $X_t$ is the number of features in the query image closer to $f_q$ than $f_b$. For each feature $f_t$, $X_t$ is an i.i.d\~stochastic variable. 
+That is, $X_t$ is the number of features in the query image closer to $f_q$ than $f_b$. For each feature $f_t$, $X_t$ is an i.i.d.~stochastic variable. 
 
 In the worst case, each feature in the \emph{target image} has a true correspondence in the \emph{query image} and $\mathbb{P}(A_{ti} = 0.5)$, in which case we find can find $\mathbb{P}(X_t = n) = \mathbb{P}(A_{ti})^n = 0.5^n$, as well as the expected value $\mathbb{E}(X_t) = \sum_{i=1}^\infty 0.5^ii = 2$, and the variance $Var(X_t) = \sum_{i=1}^\infty 0.5^i(i - 2)^2 = 6$.
 
 For $\tau = 1$ we accept a seed match when $\tau < r$, that is, when $d(f_t, f_q) \leq d(f_t, f_b)$. That means that for any feature in the \emph{query image}, we accept at most $X_t$ matches. To find the total amount of seed matches given $n$, we let $S_n = X_1 + \ldots + X_n$, in which case $\mathbb{E}(S_n) = 2n$ which shows that the expected amount of seed matches is linear in the number of target features. 
 
-For the above case it is theoretically possible that we for every one of the $n$ features end up considering $kn$ seed matches for some constant $k$, i.e. a quadratic behaviour. We can provide an upper bound on the probability of this event:
+For the above case it is theoretically possible that we for every one of the $n$ features end up considering $kn$ seed matches for some constant $k$, i.e. a quadratic behaviour. Using Chebyshev's inequality we can provide an upper bound on the probability of this event:
 \begin{align}
     \label{bound}
-    \mathbb{P}\left(\left| \frac{S_n}{n} - \mathbb{E}(X_t) \right| \ge kn\right) &\le \frac{Var\left(\frac{S_n}{n}\right)}{k^2n^2} & (chebyshev)\\
+    \mathbb{P}\left(\left| \frac{S_n}{n} - \mathbb{E}(X_t) \right| \ge kn\right) &\le \frac{Var\left(\frac{S_n}{n}\right)}{k^2n^2}\\
 &\le \frac{6}{k^2n^3}
 \end{align}
 
@@ -202,13 +198,12 @@ The noteworthy part of this result is that for the \emph{retrieval} variation we
 
 \section{Experimental Setup}
 \label{experiments}
-% TODO: get exact number of image pairs
+%
 We evalute \emph{Fast-Match} over 3024 image pairs featuring various 3D objects at different angles to measure precision and recall, as well as two pairs of images with high pixel counts to measure performance in terms of speed. We compare the algorithm to the standard \emph{Ratio-Match}\cite{lowe2004sift} as well as the newer \emph{Mirror-Match}\cite{arnfred2013mirror}. These two algorithms were selected because they are magnitudes faster than the fastest geometric algorithms while at the same time providing robust matches.
 
 \subsection{Evaluation of Fast-Match on 3D Objects}
 \label{3dobjects}
-
-% TODO: recompute number of image pairs
+%
 The 3D objects dataset by Moreels and Pietro \cite{moreels2007evaluation} allows us to experimentally compare matching algorithms over a large range of object and surface types rotated on a turnstile and photographed from every 5 degree turn.  15 objects from the dataset are shown in Figure~\ref{fig:3d_objects}.  We use images of 84 different objects under three different lighting conditions at 12 different angle intervals, conducting experiments with a total of 3024 image pairs.  
 
 \begin{figure}[htb]
@@ -303,16 +298,22 @@ To compute the total number of possible correspondences, we take each feature in
 % TODO: do we still match up to 60?
 We evaluate all matching algorithms from our framework on the 3D Objects dataset by matching images at different angular intervals. For each object we pick the \emph{query} image as the image taken at 10 degrees rotation for calibration stability.  We then match this image with the same object turned an additional $\Delta$ degrees, $\Delta \in \{5, 10, \ldots, 60\}$.  For every angle interval we compare images taken under 3 different lighting conditions as provided by the dataset. We include all objects in the database for which photos at 5 degree angle intervals are available except for the ``Rooster'' and ``Sponge'' objects due to image irregularities.
 
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=1\columnwidth]{images/timings}
+    \caption{The duration in seconds of different variations of \emph{Fast-Match} and \emph{Ratio-Match}. The top plot shows results for two 10~MPixel images two 3~Mpixel images is used for the comparison at the bottom. From the left, the first two results presume a precached image while the rest do not require knowing any inputs beforehand. The image pairs used be seen in Figure~\ref{fig:match_example}}
+    \label{fig:timings}
+\end{figure}
+
 \subsection{Configuration of \emph{Fast-Match}}
+%
 The central parameters of \emph{Fast-Match} are the confidence threshold, $\tau$ for selecting seed matches and the final confidence threshold applied to the total set of matches. For the experiments on the 3D Objects we let $\tau = 0.9$ and created precision/recall plots by varying the confidence threshold over the final set of matches. 
 
 To achieve a good balance between speed and robustness we let the region in which we extract features be a square with a side length of 90 pixels. On empirical tests we found that anything smaller would result in decreased performance while much bigger regions would decrease speed. The 90 pixel window is split in to nine smaller squares. When a seed match falls in any of these squares we match only the features within the smaller square. We let both the regions and the smaller squares overlap each other at all edges with 25 pixels in order to capture feature points lying close to an edge. For the image we have already cached we find all features within a radius of 50 pixels of the seed match.
 
-While these parameters have worked well in practice, we are sure that there exists other and better ways to implement \emph{Fast-Match} in particular for specific applications. We encourage experimentation and will happily assist with advice.
-
 \section{Results}
 \label{results}
-
+%
 \begin{figure}[t]
 \centering
 \includegraphics[width=1\columnwidth]{images/grid_match_all}
@@ -320,9 +321,9 @@ While these parameters have worked well in practice, we are sure that there exis
 \label{fig:all_objects}
 \end{figure}
 
-Figure~\ref{fig:all_objects} shows the performance of the different matching methods in our proposed framework for $12$ increasingly bigger angle differences. The results are shown in a precision / recall plot to make it easy to compare performance in terms of precision at similar levels of recall.  For each plot we show the accumulated results on all 3D objects, weighted by the number of possible true correspondences for the particular object. This ensures that each object contributes equally to the final result, despite some objects resulting in disproportionally more matches than others.
+Figure~\ref{fig:all_objects} shows the performance of the different matching methods in our proposed framework for $12$ increasingly bigger angle differences. The results are shown in a precision-recall plot to make it easy to compare performance in terms of precision at similar levels of recall.  For each plot we show the accumulated results on all 3D objects, weighted by the number of possible true correspondences for the particular object. This ensures that each object contributes equally to the final result, despite some objects resulting in disproportionally more matches than others.
 
-At low angular differences all algorithms show similar performance at low recall, however \emph{Fast-Match} is superior to \emph{Ratio-Match} and \emph{Mirror-Match} at higher recall, more than doubling the precision at similar recall levels. This picture remains the same at higher angular differences, but with a higher performance gab between \emph{Ratio-Match} and the other algorithms at low recall while more than doubling precision at higher recalls. Finally for image pairs with angular differences over 50$^0$ the performance of all algorithms decline with \emph{Fast-Match} still showing better results for the most part. 
+At low angular differences all algorithms show similar performance at low recall, however \emph{Fast-Match} is superior to \emph{Ratio-Match} and \emph{Mirror-Match} at higher recall, more than doubling the precision at similar recall levels. This picture remains the same at higher angular differences, but with a higher performance gab between \emph{Fast-Match} and the other algorithms at low recall while more than doubling precision at higher recalls. Finally for image pairs with angular differences over 50$^0$ the performance of all algorithms decline with \emph{Fast-Match} still better results. 
 
 The high recall rates of \emph{Fast-Match} are partially explained by the fact that we can allow our confidence thresholds to be more lenient when we already know that we are likely to find correct correspondences in the regions that we are matching. However lenient thresholds can easily impact the matching speed, so in practical situations we will usually have to choose between matching fast and precise or slower with high recall. 
 
