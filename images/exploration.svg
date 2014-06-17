@@ -15,26 +15,9 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="exploration.pdf">
+   sodipodi:docname="exploration.svg">
   <defs
-     id="defs4">
-    <pattern
-       inkscape:stockid="Stripes 1:1"
-       id="Strips1_1"
-       patternTransform="translate(0,0) scale(10,10)"
-       height="1"
-       width="2"
-       patternUnits="userSpaceOnUse"
-       inkscape:collect="always">
-      <rect
-         id="rect4792"
-         height="2"
-         width="1"
-         y="-0.5"
-         x="0"
-         style="fill:black;stroke:none" />
-    </pattern>
-  </defs>
+     id="defs4" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -42,15 +25,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="143.87298"
-     inkscape:cy="121.6844"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="164.82456"
+     inkscape:cy="67.641409"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1056"
-     inkscape:window-x="1920"
+     inkscape:window-width="1280"
+     inkscape:window-height="776"
+     inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
      fit-margin-top="0"
@@ -75,7 +58,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -85,8 +68,8 @@
      id="layer1"
      transform="translate(-216.84375,-41.375)">
     <rect
-       y="87.372337"
-       x="268.65808"
+       y="101.37234"
+       x="282.65808"
        height="25"
        width="25"
        id="rect4049"
@@ -108,8 +91,8 @@
        inkscape:export-ydpi="199.86554" />
     <rect
        transform="scale(-1,-1)"
-       y="-137.31436"
-       x="-293.65814"
+       y="-151.31436"
+       x="-307.65814"
        height="25"
        width="25"
        id="use5588"
@@ -119,8 +102,8 @@
        inkscape:export-ydpi="199.86554" />
     <rect
        transform="scale(-1,-1)"
-       y="-137.31436"
-       x="-318.63043"
+       y="-151.31436"
+       x="-332.63043"
        height="25"
        width="25"
        id="use5590"
@@ -130,8 +113,8 @@
        inkscape:export-ydpi="199.86554" />
     <rect
        transform="scale(-1,-1)"
-       y="-87.314369"
-       x="-318.63043"
+       y="-101.31437"
+       x="-332.63043"
        height="25"
        width="25"
        id="use5592"
@@ -144,8 +127,8 @@
        id="use4051"
        width="25"
        height="25"
-       x="-343.65814"
-       y="-87.314369"
+       x="-357.65814"
+       y="-101.31437"
        transform="scale(-1,-1)"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
@@ -155,14 +138,14 @@
        id="rect5586"
        width="25"
        height="25"
-       x="318.65808"
-       y="87.372337"
+       x="332.65808"
+       y="101.37234"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554" />
     <rect
-       y="62.362183"
-       x="268.70715"
+       y="76.362183"
+       x="282.70715"
        height="75"
        width="75"
        id="rect5553"
@@ -175,8 +158,8 @@
        id="use3866"
        width="25"
        height="25"
-       x="345.10596"
-       y="87.372337"
+       x="359.10596"
+       y="101.37234"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554" />
@@ -185,7 +168,7 @@
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554"
-       transform="translate(-250,0)">
+       transform="translate(-236,14)">
       <rect
          y="62.362183"
          x="595"
@@ -245,8 +228,8 @@
     <text
        xml:space="preserve"
        style="line-height:125%"
-       x="356.23364"
-       y="108.47614"
+       x="346.73364"
+       y="94.726143"
        id="text3779"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
@@ -254,8 +237,8 @@
        inkscape:export-ydpi="199.86554"><tspan
          sodipodi:role="line"
          id="tspan3781"
-         x="356.23364"
-         y="108.47614">f<tspan
+         x="346.73364"
+         y="94.726143">f<tspan
    style="font-size:65.00091553%;baseline-shift:sub"
    id="tspan3783">t</tspan></tspan></text>
     <rect
@@ -263,8 +246,8 @@
        id="use4053"
        width="25"
        height="25"
-       x="-370.01166"
-       y="-87.314377"
+       x="-384.01166"
+       y="-101.31438"
        transform="scale(-1,-1)"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
@@ -274,8 +257,8 @@
        id="rect3811"
        width="75"
        height="75"
-       x="345"
-       y="62.362183"
+       x="359"
+       y="76.362183"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554" />
@@ -306,9 +289,9 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 610,107.36218 3,-9.999997 -4.16025,-9.330127 L 616,95.630132 626.16025,96.692309 616,99.094233 z"
-       inkscape:transform-center-x="-0.95379523"
-       inkscape:transform-center-y="-1.9280903"
-       transform="matrix(0.91628532,0.40052617,-0.40052617,0.91628532,-174.50151,-243.11938)"
+       inkscape:transform-center-x="-0.2105879"
+       inkscape:transform-center-y="2.6107312"
+       transform="matrix(0.91063916,-0.41320252,0.41320252,0.91063916,-236.25552,271.87349)"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554" />
@@ -316,7 +299,7 @@
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="522.23279"
-       y="213.73354"
+       y="183.73354"
        id="text5517-2"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
@@ -325,7 +308,7 @@
          sodipodi:role="line"
          id="tspan5519-3"
          x="522.23279"
-         y="213.73354"
+         y="183.73354"
          style="font-size:20px;font-style:italic;-inkscape-font-specification:Sans Italic">Target Image</tspan></text>
     <path
        sodipodi:type="star"
@@ -344,7 +327,7 @@
        d="m 610,107.36218 3,-9.999997 -4.16025,-9.330127 L 616,95.630132 626.16025,96.692309 616,99.094233 z"
        inkscape:transform-center-x="-2.5"
        inkscape:transform-center-y="0.33493649"
-       transform="translate(-379.59632,78.913315)"
+       transform="translate(-379.59632,-41.086685)"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554" />
@@ -352,7 +335,7 @@
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="251.93491"
-       y="180.74216"
+       y="60.742157"
        id="text5622"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
@@ -361,7 +344,7 @@
          sodipodi:role="line"
          id="tspan5624"
          x="251.93491"
-         y="180.74216"
+         y="60.742157"
          style="font-size:16px;font-style:italic;-inkscape-font-specification:Sans Italic">: feature</tspan></text>
     <path
        sodipodi:type="arc"
@@ -372,7 +355,7 @@
        sodipodi:rx="35.398441"
        sodipodi:ry="35.398441"
        d="m 387.89844,174.86218 a 35.398441,35.398441 0 1 1 -70.79688,0 35.398441,35.398441 0 1 1 70.79688,0 z"
-       transform="translate(194.94453,-51.591345)"
+       transform="translate(194.94453,-55.591345)"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554" />
@@ -389,7 +372,7 @@
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554" />
     <path
-       transform="translate(217.02154,-44.73986)"
+       transform="translate(217.02154,-48.73986)"
        d="m 387.89844,174.86218 a 35.398441,35.398441 0 1 1 -70.79688,0 35.398441,35.398441 0 1 1 70.79688,0 z"
        sodipodi:ry="35.398441"
        sodipodi:rx="35.398441"
@@ -403,16 +386,16 @@
        inkscape:export-ydpi="199.86554" />
     <text
        xml:space="preserve"
-       x="552.27972"
-       y="139.7132"
+       x="525.02972"
+       y="114.7132"
        id="text3779-0"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554"><tspan
          sodipodi:role="line"
          id="tspan3781-1"
-         x="552.27972"
-         y="139.7132">f<tspan
+         x="525.02972"
+         y="114.7132">f<tspan
    style="font-size:65.00091553%;baseline-shift:sub"
    id="tspan3809">q</tspan></tspan></text>
     <path
@@ -430,9 +413,9 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 610,107.36218 3,-9.999997 -4.16025,-9.330127 L 616,95.630132 626.16025,96.692309 616,99.094233 z"
-       inkscape:transform-center-x="-2.5"
-       inkscape:transform-center-y="0.33493649"
-       transform="translate(-68.174792,26.892464)"
+       inkscape:transform-center-x="0.55655063"
+       inkscape:transform-center-y="2.2992089"
+       transform="matrix(0.84545915,-0.5340401,0.5340401,0.84545915,-25.127477,366.37356)"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
        inkscape:export-xdpi="199.86554"
        inkscape:export-ydpi="199.86554" />
@@ -440,7 +423,7 @@
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="275.13147"
-       y="213.47565"
+       y="183.47565"
        id="text5517"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
@@ -449,7 +432,39 @@
          sodipodi:role="line"
          id="tspan5519"
          x="275.13147"
-         y="213.47565"
+         y="183.47565"
          style="font-size:20px;font-style:italic;-inkscape-font-specification:Sans Italic">Query Image</tspan></text>
+    <text
+       xml:space="preserve"
+       style="line-height:125%"
+       x="370.41083"
+       y="121.50228"
+       id="text3779-3"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
+       inkscape:export-xdpi="199.86554"
+       inkscape:export-ydpi="199.86554"><tspan
+         sodipodi:role="line"
+         id="tspan3781-3"
+         x="370.41083"
+         y="121.50228">R<tspan
+   style="font-size:65.00091553%;baseline-shift:sub"
+   id="tspan3783-3">q</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="line-height:125%"
+       x="584.21252"
+       y="142.95747"
+       id="text3779-3-2"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/arnfred/Papers/fastmatch/images/exploration.pdf.png"
+       inkscape:export-xdpi="199.86554"
+       inkscape:export-ydpi="199.86554"><tspan
+         sodipodi:role="line"
+         id="tspan3781-3-3"
+         x="584.21252"
+         y="142.95747">R<tspan
+   style="font-size:65.00091553%;baseline-shift:sub"
+   id="tspan3783-3-9">t</tspan></tspan></text>
   </g>
 </svg>
