@@ -39,7 +39,7 @@
 \def\ACCV14SubNumber{***}  % Insert your submission number here
 
 %===========================================================
-\title{Fast-Match: Fast and robust feature matching on large images}
+\title{Fast-Match:\\Fast and Robust Feature Matching on Large Images}
 \titlerunning{ACCV-14 submission ID \ACCV14SubNumber}
 \authorrunning{ACCV-14 submission ID \ACCV14SubNumber}
 
@@ -51,7 +51,7 @@
 %===========================================================
 
 \begin{abstract}
-    Both consumer cameras and camera phones produce images that often exceed 10 megapixels. Yet computing and matching local features in images of this size can easily take more than twenty seconds using fast matching algorithms. This is much too slow for interactive applications and much too expensive for large scale image operations. We introduce \emph{Fast-Match}, an algorithm designed to swiftly match large images without compromising on matching precision or recall. \emph{Fast-Match} derives its speed from only computing features in those parts of the image that can be confidently matched. We show that \emph{Fast-Match} is an order of magnitude faster than \emph{Ratio-Match}, yet often doubles the precision on difficult to match image pairs at equal recall. In addition we prove that when one image is known in advance, \emph{Fast-Match} can achieve linear performance $O(n)$ in the number of feature points $n$.
+    Consumer digital cameras and camera phones produce images that often exceed 10 megapixels. Yet computing and matching local features in images of this size can easily take more than twenty seconds using fast matching algorithms. This is much too slow for interactive applications and much too expensive for large scale image operations. We introduce \emph{Fast-Match}, an algorithm designed to swiftly match large images without compromising on matching precision or recall. \emph{Fast-Match} derives its speed from only computing features in those parts of the image that can be confidently matched. We show that \emph{Fast-Match} is an order of magnitude faster than \emph{Ratio-Match}, yet often doubles the precision on difficult to match image pairs at equal recall. In addition we prove that when one image is known in advance, \emph{Fast-Match} can achieve linear performance $O(n)$ in the number of feature points $n$.
 \end{abstract}
 
 \section{Introduction}
@@ -93,7 +93,7 @@ While geometric constraints have been shown to work well, they are often suscept
     \begin{subfigure}[t]{0.5\columnwidth}
         \includegraphics[width=1\columnwidth]{images/Illinois-ratiomatch}
     \end{subfigure}%
-    \caption{The 50 best matches by the proposed \emph{Fast-Match} algorithm (left) and the \emph{Ratio-Match} algorithm \cite{lowe2004sift} (right). The lines between the image pairs denote a match as proposed by the algorithm. For \emph{Fast-Match} the zones of the right image where local features were computed has been marked with a blue square.}
+    \caption{The 50 best matches by the proposed \emph{Fast-Match} algorithm (left) and the \emph{Ratio-Match} algorithm \cite{lowe2004sift} (right). The lines between the image pairs denote a match as proposed by the algorithm. For \emph{Fast-Match} the areas where local features were computed are marked with blue squares in the right image.}
     \label{fig:match_example}
 \end{figure}
 
@@ -153,17 +153,17 @@ We are faced with a problem when applying this technique to obtain the set of co
 
 In the retrieval scenario where we know an image beforehand, we can further optimize this step. If we assume the \emph{target image} is known in advance we can approximate the ratio by letting $\hat r = d(f_t, f_q)/d(f_t,f_b)$. Here the feature $f_b$ is also part of the target image, which means we can pre-calculate $d(f_t, f_b)$ for all features in the cached \emph{target image} before we start matching. When these distances are tied to their corresponding feature in the target image, it becomes trivial to calculate $\hat r$.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.75\columnwidth]{images/exploration}
-\caption{Exploration of features based on match. The areas shaded blue are the areas that were searched to obtain the match. The areas shaded green are candidate areas for obtaining more matches.}
-\label{fig:exploration}
-\end{figure}
-
 \subsection{Exploring for Matches}
 \label{exploring}
 %
 In each iteration we compute a new set of seed matches, i.e.\ positions that might yield more matches in the image. For each region $R_i$ evaluated during the collection step we now have a set of matches $M_i$ and a set of confidence levels $C_i$ that we can use to predict whether the neighbourhood of $R_i$ is worth exploring.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.75\columnwidth]{images/exploration}
+\caption{Exploration of features based on a match. The areas shaded blue are the areas that were searched to obtain the match. The areas shaded green are candidate areas for obtaining more matches.}
+\label{fig:exploration}
+\end{figure}
 
 There are many possible heuristics for predicting possible regions including local and global epipolar assumptions and partial graph isomorphisms. However, for the sake of simplicity and speed we have chosen a straightforward approach based on weak angular assumptions, as illustrated in Figure~\ref{fig:exploration}. Assuming that the \emph{target image} has been cached either in advance or before the matching step, the blue shaded areas show $R_q$ and $R_t$ for a given seed match. In the \emph{target image} we collect all features in a given radius while we compute features in the rectangular $R_q$ in the \emph{query image}. For performance reasons we compute all features in the blue square but match only the features inside the shaded area. Next a match is found in the collection step between $f_q$ and $f_t$. Based on the position of $f_q$ in $R_q$ we select three areas with potential for more matches. The center of each is matched with the center position $f_t$ to produce three seed matches for the next iteration. In Figure~\ref{fig:match_example} we illustrate this process in the \emph{Fast-Match} image pair. The \emph{query image} to the right in the figure has a small blue square for each region that has been used while matching the two images.
 
@@ -289,7 +289,7 @@ The 3D Objects dataset by Moreels and Perona \cite{moreels2007evaluation} allows
     \vspace{1.5 mm}
 
     \caption{15 objects from the 3D Objects dataset by Moreels
-    and Pietro \cite{moreels2007evaluation}.}
+    and Perona \cite{moreels2007evaluation}.}
     \label{fig:3d_objects}
 \end{figure}
 
@@ -324,7 +324,7 @@ The high recall rates of \emph{Fast-Match} are partially explained by the fact t
 \begin{figure}[tb]
     \centering
     \includegraphics[width=1\columnwidth]{images/timings}
-    \caption{The duration in seconds of different variations of \emph{Fast-Match} and \emph{Ratio-Match}. The top plot shows results for two 10~MPixel images two 3~Mpixel images is used for the comparison at the bottom. From the left, the first two results presume a precached image while the rest do not require knowing any inputs beforehand. The image pairs used be seen in Figure~\ref{fig:match_example}}
+    \caption{Running times of different variations of \emph{Fast-Match} and \emph{Ratio-Match}. The top plot shows results for two 10~MPixel images two 3~Mpixel images is used for the comparison at the bottom. From the left, the first two results presume a precached image while the rest do not require knowing any inputs beforehand. The image pairs used be seen in Figure~\ref{fig:match_example}.}
     \label{fig:timings}
 \end{figure}
 
