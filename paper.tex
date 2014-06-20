@@ -60,7 +60,7 @@ Whenever we match local image features we are faced with a choice between perfor
 
 In this paper we introduce a matching algorithm designed to match features between two images only in image areas that are likely to correspond. This approach is much faster than traditional methods because there is no need to compute descriptors for areas in the image that are not matched. We provide two variations of the algorithm: The \emph{general} variation functions as a traditional matching algorithm and matches two unknown images albeit faster and more robustly than conventional methods. The \emph{retrieval} variation on the other hand assumes that we know one of the images we intend to match beforehand; under this assumption, it can be a magnitude faster than existing matching methods without compromising on accuracy. We will unimaginatively refer to the proposed algorithm as \emph{Fast-Match} in this paper and make clear from the context whether this refers to the \emph{retrieval} or \emph{general} variation.
 
-The problem that \emph{Fast-Match} attempts to solve is two-fold. By matching only image areas that are likely to correspond we hope to improve accuracy by entirely ignoring parts of the images that would otherwise likely be a source of incorrect correspondences. At the same time, this enables us to improve computational speed by not having to compute keypoints and descriptors for large parts of the images and at the same time reducing the amount of feature points we need to match. Both problems have been addressed in part by past work. 
+The problem that \emph{Fast-Match} attempts to solve is two-fold. By matching only image areas that are likely to correspond we hope to improve accuracy by entirely ignoring parts of the images that would otherwise likely be a source of incorrect correspondences. At the same time, this enables us to improve computational speed by not having to compute keypoints and descriptors for large parts of the images and at the same time reducing the amount of feature points we need to match. 
 
 \emph{Fast-Match} makes use of an angular assumption to efficiently find new matches in the geometric neighbourhood of already confirmed matches. However this constraint is only applied \emph{locally} to increase the number of matches, making \emph{Fast-Match} robust to outliers. In addition \emph{Fast-Match} does not rely on an initial set of matches and derives much of its speed from the fact that not even an initial set of local image features is required.
 
@@ -72,7 +72,18 @@ This paper is structured as follows: Section~\ref{related} discuss related work.
 As noted, the cost of computing SIFT keypoints and descriptors is addressed by other local image features such as SURF \cite{bay2006surf}, BRIEF \cite{calonder2010brief}, or BRISK \cite{leutenegger2011brisk}, just to mention a few. Similarly efforts have been made to improve SIFT itself such as PCA-SIFT \cite{ke2004pca} and GLOH \cite{mikolajczyk2005performance}. Both apply PCA to reduce descriptor lengths and improve distinctiveness, but neither have been shown to consistently outperform SIFT 
 \cite{mikolajczyk2005performance,li2008comprehensive}. 
 
-Efforts to reduce the computational costs of finding nearest neighbours to feature points have largely focused on metric trees. Na\"ively the set of nearest neighbours between features in two images can computed by brute force in $O(n^2)$, where $n$ is the total number of feature points in the two images (a typical three megapixel image may contain anywhere from 500 to 5000 feature points). When SIFT was originally published Lowe, proposed using the Best-Bin-First method to approximately search for nearest neighbours \cite{beis1997shape,lowe1999object}. This reduces the computational complexity to $O(n\log n)$, but even approximate metric trees are hard pressed to compete with brute force due to the high dimensionality of SIFT and the constant costs incurred with constructing and searching in a metric tree. Later work by Muja and Lowe \cite{muja2009fast} focused on improving approximate nearest neighbour searches by using several KD-Trees simultaneously while optimizing the tree structure using K-Means to cluster similar features. Recent work on knn-graphs shows a lot of promise for high dimensional cases \cite{dong2011efficient}. We later review these improvements and their effect on efficiently matching large scale images.
+Efforts to reduce the computational costs of finding nearest neighbours
+to feature points have largely focused on metric trees. Na\"ively the
+set of nearest neighbours between features in two images can computed by
+brute force in $O(n^2)$, where $n$ is the total number of feature points
+in the two images (a typical three megapixel image may contain anywhere
+from 500 to 5000 feature points). When SIFT was originally published,
+Lowe proposed using the Best-Bin-First method to approximately search
+for nearest neighbours \cite{beis1997shape,lowe1999object}. This reduces
+the computational complexity to $O(n\log n)$, but for smaller images
+even approximate metric trees are hard pressed to compete with brute
+force due to the high dimensionality of SIFT and the costs
+incurred with constructing the metric tree. Later work by Muja and Lowe \cite{muja2009fast} focused on improving approximate nearest neighbour searches by using several KD-Trees simultaneously while optimizing the tree structure using K-Means to cluster similar features. Recent work on knn-graphs shows a lot of promise for high dimensional cases \cite{dong2011efficient}. We later review these improvements and their effect on efficiently matching large scale images.
 
 A wealth of matching methods have focused instead on increasing the efficiency of local feature matching. \emph{Fast-Match} builds upon the foundation of \emph{Ratio-Match} introduced originally by Deriche et al.~\cite{deriche1994robust} and Baumberg~\cite{baumberg2000reliable} even though Lowe is usually credited for introducing it~\cite{lowe2004sift}. They both propose using the ratio of the similarity of the best to second best match of a given point to evaluate how unique it is. Their finding has later been tested by several independent teams, all concluding that thresholding based on this ratio is generally superior to thresholding based on similarity or returning all nearest neighbours \cite{lowe2004sift,mikolajczyk2005performance,moreels2007evaluation,rabin2009statistical}.
 
@@ -80,7 +91,7 @@ Brown and Lowe \cite{brown2005multi} extend ratio match to deal with a set of im
 
 Another inspiration for the design of \emph{Fast-Match} is \emph{Patch-Match} as introduced by Barnes et al.~\cite{barnes2009patchmatch}. Like \emph{Fast-Match}, \emph{Patch-Match} is an iterative algorithm for fast image matching, but unlike \emph{Fast-Match}, which uses sparse local image features, \emph{Patch-Match} is designed for dense image features. It works by randomly creating a set of matches from both images and then iteratively improving it.
 
-For sparse local image features many solutions have combined \emph{Ratio-Match} with various geometric constraints to improve matching. These constraints are based on assumptions regarding the transformation between the \emph{query} and \emph{target images}. A commonly used example is \emph{RANSAC} applied to feature matching where matches are chosen from a pool of candidates according to how well they approximate a global epipolar geometry \cite{fischler1981ransac,torr2000mlesac,szeliski2010}. Similar global angular and distance constraints can be used to filter a set of matches as shown in \cite{kim2008efficient,schmid1997local}. Finally the problem of feature matching can be modelled as a graph matching problem where each feature is a vertex, and edge values correspond to a geometric relation between two features as demonstrated in \cite{torresani2008feature,yarkony2010covering,cho2010reweighted}. For cases that require more flexibility such as scenes with moving elements and non-planar perspective change Pairwise constraints provide an alternative to the more rigid global constraints. Introduced by Leordeanu and Herbert \cite{leordeanu2005spectral}, pairwise constraints work by applying a geometric constraint across matches on a pairwise basis, attempting to minimize the pairwise error. This approach has later been adopted by Pang et al.\ but made scale invariant and more efficient by using a voting scheme \cite{yuan2012efficient,pang2012scale}. Similarly we can cluster matches together based on a geometric constraint and treat each cluster as a separate case \cite{cho2009feature,wu2011robust}. An interesting application of this principle is demonstrated by Chen et al.\ who iteratively use a Hough transform to cluster matches using angular constraints \cite{chen2013robust}.
+For sparse local image features many solutions have combined \emph{Ratio-Match} with various geometric constraints to improve matching. These constraints are based on assumptions regarding the transformation between the \emph{query} and \emph{target images}. A commonly used example is \emph{RANSAC} applied to feature matching where matches are chosen from a pool of candidates according to how well they approximate a global epipolar geometry \cite{fischler1981ransac,torr2000mlesac,szeliski2010}. Similar global angular and distance constraints can be used to filter a set of matches as shown in \cite{kim2008efficient,schmid1997local}. Finally the problem of feature matching can be modelled as a graph matching problem where each feature is a vertex, and edge values correspond to a geometric relation between two features as demonstrated in \cite{torresani2008feature,yarkony2010covering,cho2010reweighted}. For cases that require more flexibility such as scenes with moving elements and non-planar perspective change pairwise constraints provide an alternative to the more rigid global constraints. Introduced by Leordeanu and Herbert \cite{leordeanu2005spectral}, pairwise constraints work by applying a geometric constraint across matches on a pairwise basis, attempting to minimize the pairwise error. This approach has later been adopted by Pang et al.\ but made scale invariant and more efficient by using a voting scheme \cite{yuan2012efficient,pang2012scale}. Similarly we can cluster matches together based on a geometric constraint and treat each cluster as a separate case \cite{cho2009feature,wu2011robust}. An interesting application of this principle is demonstrated by Chen et al.\ who iteratively use a Hough transform to cluster matches using angular constraints \cite{chen2013robust}.
 
 While geometric constraints have been shown to work well, they are often susceptible to outliers and tend to be computationally demanding. All of the above geometric methods require a set of initial matches usually provided by \emph{Ratio-Match} which acts as a lower bound on their running time. In practice even fast graph matching methods such as the covering trees method proposed by Yarkony et al.\ are two or three magnitudes slower than \emph{Ratio-Match} \cite{yarkony2010covering}.
 
@@ -105,11 +116,14 @@ In this section we will introduce the fundamentals of \emph{Fast-Match} and moti
 \subsection{Considerations}
 \label{considerations}
 %
-If we set out to design a truly fast matching algorithm, we cannot rely just on optimizing the matching step once the descriptors from both images have been found and computed. Finding and computing descriptors can easily account for 80\% of the time spent matching for bigger images (cf.\ Figure~\ref{fig:timings}). For this reason \emph{Fast-Match} is designed to only compute features for the part of the image we hope to match. 
+If we set out to design a truly fast matching algorithm, we cannot rely
+just on optimizing the matching step once the descriptors from both
+images have been found and computed. Finding and computing descriptors
+can easily account for 80\% of the time spent matching in the case of bigger images (cf.\ Figure~\ref{fig:timings}). For this reason \emph{Fast-Match} is designed to only compute features for the part of the image we hope to match. 
 
 The \emph{Fast-Match} algorithm is demonstrated in Algorithm~\ref{alg-fast}. Given a \emph{query image} and a \emph{target image} that we intend to match and a confidence threshold $\tau$, we obtain a set of seed matches from the two images. For each seed match we look at the matched position in the \emph{query} and \emph{target images} and find a set of matches. We save these matches and their confidence scores; for those that pass the confidence threshold $\tau$, we obtain another set of seed matches. In this way we iterate until we have no more seed matches and return the matches and their confidence scores. In an intuitive sense $\tau$ serves as a parameter directing the thoroughness of the algorithm, i.e. how much time we spend matching, while the final precision and recall can be adjusted by thresholding the matches on their confidence scores at the end.
 
-We a \emph{general} and a \emph{retrieval} variation of the algorithm. The latter assumes that we know one of the images that we intend to match ahead of time and can do some off-line computations. For the \emph{general} variation we make those computations on the fly instead and do not assume anything to be pre-computed. 
+We introduce a \emph{general} and a \emph{retrieval} variation of the algorithm. The latter assumes that we know one of the images that we intend to match ahead of time and can do some off-line computations. For the \emph{general} variation we make those computations on the fly instead and do not assume anything to be pre-computed. 
 
 \begin{algorithm}[htb]
 \caption{Fast-Match}
@@ -131,7 +145,7 @@ We a \emph{general} and a \emph{retrieval} variation of the algorithm. The latte
     \Return $M_{final}, C_{final}$
 \end{algorithmic}
 \end{algorithm}
-
+%
 \subsection{Initiating Seeds}
 \label{seeds}
 %
@@ -144,8 +158,7 @@ If a seed match yields a connection between two points $p_q$ in the \emph{query 
 
 Lowe and others have shown that the distance between two SIFT descriptors is much less indicative of a true correspondence than the ratio between the best and second best match \cite{lowe2004sift,mikolajczyk2005performance,moreels2007evaluation,rabin2009statistical}. This ratio is more formally defined as follows: If we let $f_q$ be a feature in the \emph{query image} and $f_t, f_b$ be the two nearest neighbours of $f_q$ in the \emph{target image} then the ratio $r$ is defined as follows:
 \begin{align*}
-    r &= %\text{r}(f_{q}, (f_t, f_b)) \\
-        &= \frac{d(f_{q}, f_{t})}{d(f_{q}, f_{b})}.
+    r &= \frac{d(f_{q}, f_{t})}{d(f_{q}, f_{b})}.
 \end{align*}
 Here $d(f_i,f_j)$ is the distance between the features $f_i$ and $f_j$. For SIFT this is the Euclidean distance. The distance between two feature points is greater when the feature points resemble each other less. For this reason we have higher confidence in a match with a low $r$-value. Using $r$ as a measure of match confidence presumes that we expect each feature in the \emph{target image} to have at most one true correspondence in the \emph{target image}. Intuitively if we try to find a match for a feature $f_i$ in an image that does not have any true correspondences, then we would expect the two closest neighbours to be roughly equally well matched with $f_i$. For this reason we attribute high confidence to matches where the closest neighbour is dramatically closer to $f_i$ than the second closest neighbour and discard the rest.
 
@@ -176,7 +189,10 @@ The difference between the \emph{general} and \emph{retrieval} variation of \emp
 
 Once the features and their distances have been computed, the algorithm iteratively finds new seed matches based on previous sets of seed matches. For each seed match we collect new matches, calculate confidence scores, and obtain new seed matches. Each of these steps varies only with the local region size which is constant. As a consequence the running time is linear in the amount of possible seed matches.
 
-We will show that the number of possible seed matches is on average linear in the number of image features, and we also provide an upper bound for the probability that it is not. We assume that outside of true correspondences, features have better or at least equally good matches in terms of confidence in the image they come from. More rigorously put: For any feature in the target image $f_t$ let $f_1, f_2, \ldots$ be the best, second best, etc matching feature from either image which is not a true correspondence. Let $A_{ti}$ be the event that $f_i$ is found in the \emph{query image}, then $\mathbb{P}(A_{ti}) \leq 0.5$ and $A_{ti}$ is independent from $A_{tj}$ when $i \ne j$.
+For the overall running time to be linear, we will need to show that the
+number of possible seed matches is linear in the number of image
+features. We will prove that this is the case on average and provide an
+upper bound for the probability that the average case will not happen. We assume that outside of true correspondences, features have better or at least equally good matches in terms of confidence in the image they come from. More rigorously put: For any feature in the target image $f_t$ let $f_1, f_2, \ldots$ be the best, second best, etc matching feature from either image which is not a true correspondence. Let $A_{ti}$ be the event that $f_i$ is found in the \emph{query image}, then $\mathbb{P}(A_{ti}) \leq 0.5$ and $A_{ti}$ is independent from $A_{tj}$ when $i \ne j$.
 
 For a given feature in the \emph{target image} $f_t$, its nearest neighbour in the \emph{target image} $f_b$, and the set of features in the \emph{query image} $F_{query}$, we can define the stochastic variable $X_t$ as follows:
 \begin{align}
@@ -184,7 +200,15 @@ For a given feature in the \emph{target image} $f_t$, its nearest neighbour in t
 \end{align}
 That is, $X_t$ is the number of features in the query image closer to $f_q$ than $f_b$. For each feature $f_t$, $X_t$ is an i.i.d.~stochastic variable. 
 
-In the worst case, each feature in the \emph{target image} has a true correspondence in the \emph{query image} and $\mathbb{P}(A_{ti} = 0.5)$, in which case we find can find $\mathbb{P}(X_t = n) = \mathbb{P}(A_{ti})^n = 0.5^n$, as well as the expected value $\mathbb{E}(X_t) = \sum_{i=1}^\infty i0.5^i = 2$, and the variance $Var(X_t) = \sum_{i=1}^\infty 0.5^i(i - 2)^2 = 6$.
+In the worst case, each feature in the \emph{target image} has a true
+correspondence in the \emph{query image} and $\mathbb{P}(A_{ti} = 0.5)$,
+in which case we compute the probability that $X_t = n$ as well as the
+expected value and variance of $X_t$:
+\begin{align}
+    \mathbb{P}(X_t = n) &= \mathbb{P}(A_{t1} \wedge \ldots \wedge A_{tn}) = 0.5^n \\
+    \mathbb{E}(X_t) &= \sum_{i=1}^\infty i0.5^i = 2 \\
+    Var(X_t) &= \sum_{i=1}^\infty 0.5^i(i - 2)^2 = 6
+\end{align}
 
 For $\tau = 1$ we accept a seed match when $d(f_t, f_q) \leq d(f_t, f_b)$. That means that for any feature in the \emph{query image}, we accept at most $X_t$ matches. To find the total amount of seed matches given $n$, we let $S_n = X_1 + \ldots + X_n$, in which case $\mathbb{E}(S_n) = 2n$. This proves that the expected amount of seed matches is linear in the number of target features. 
 
@@ -333,12 +357,16 @@ pairs used can be seen in Figure~\ref{fig:match_example}.}
     \label{fig:timings}
 \end{figure}
 
-Figure~\ref{fig:timings} demonstrate the speed of \emph{Fast-Match} on image sizes as is typically produced by modern consumer cameras and camera phones. In Figure~\ref{fig:timings} we compare the speed of the two variations of \emph{Fast-Match} to different variations of \emph{Ratio-Match} on two image pairs, one with two images of 10 megapixel and another where the same image pair has been scaled to 3 megapixels. For the larger images we see the clearest difference in performance. The retrieval variant of \emph{Fast-Match} matches the image pairs in around one second while a retrieval variant of \emph{Ratio-Match} with precomputed features spends eight seconds on the same task. This result is roughly equal to the time the general variation of \emph{Fast-Match} spends matching the two images without any pre-computations. For the nearest neighbor search we note that for large images there are substantial speed gains to be had by choosing the right algorithm for finding nearest neighbors, with Muja et al.'s Flann matcher being vastly superior to brute force and KGraph. 
+Figure~\ref{fig:timings} demonstrate the speed of \emph{Fast-Match} on
+image sizes as is typically produced by modern consumer cameras and
+camera phones. We compare the speed of the two variations of \emph{Fast-Match} to different variations of \emph{Ratio-Match} on two image pairs, one with two images of 10 megapixel and another where the same image pair has been scaled to 3 megapixels. For the larger images we see the clearest difference in performance. The retrieval variant of \emph{Fast-Match} matches the image pairs in around one second while a retrieval variant of \emph{Ratio-Match} with precomputed features spends eight seconds on the same task. This result is roughly equal to the time the general variation of \emph{Fast-Match} spends matching the two images without any pre-computations. For the nearest neighbor search we note that for large images there are substantial speed gains to be had by choosing the right algorithm for finding nearest neighbors, with Muja et al.'s Flann matcher being vastly superior to brute force and KGraph. 
 
 For the 3 megapixel picture the pattern repeats itself, although with smaller margins separating \emph{Fast-Match} and \emph{Ratio-Match}. When images are smaller, computations like obtaining the initial seed matches are comparatively more costly.
 
 Figure~\ref{fig:match_example} shows the result from matching the pair of three megapixel images using \emph{Fast-Match} and \emph{Ratio-Match}. %An almost identical result can be obtained using the pair of 10 megapixel pictures instead. 
-\emph{Fast-Match} ends up only matching the part of the images that are likely to have correspondences. This highlights both a strength and a weakness of \emph{Fast-Match}. It is this myopic matching approach that is responsible for \emph{Fast-Match}' speed and precision; on the other hand, \emph{Fast-Match} is not the best candidate for images that are almost identical, because its step by step approach incurs too much overhead to compete in speed with \emph{Ratio-Match} in those cases.
+\emph{Fast-Match} ends up only matching the part of the images that are
+likely to have correspondences. This highlights both a strength and a
+weakness of \emph{Fast-Match}. It is the narrow matching approach which is responsible for \emph{Fast-Match}' speed and precision; on the other hand, \emph{Fast-Match} is not the best candidate for images that are almost identical, because its step by step approach incurs too much overhead to compete in speed with \emph{Ratio-Match} in those cases.
 
 \section{Conclusion}
 \label{conclusion}
