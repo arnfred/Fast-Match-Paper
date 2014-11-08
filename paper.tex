@@ -1,7 +1,10 @@
-\documentclass[runningheads]{llncs}
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb} % define this before the line numbering.
-\usepackage{ruler}
+%\usepackage{ruler}
 \usepackage{color}
 \usepackage{footnote}
 \usepackage{multirow} 
@@ -29,22 +32,22 @@
 		\end{array}
 	\right.
 }
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifcvprfinal\pagestyle{empty}\fi
 %===========================================================
 \begin{document}
-\pagestyle{headings}
-\mainmatter
+%\pagestyle{headings}
 
 % TODO: Insert submission number
 \def\ACCV14SubNumber{***}  % Insert your submission number here
 
 %===========================================================
 \title{Fast-Match: Fast and robust feature matching on large images}
-\titlerunning{ACCV-14 submission ID \ACCV14SubNumber}
-\authorrunning{ACCV-14 submission ID \ACCV14SubNumber}
 
-\author{Anonymous ACCV 2014 submission}
-\institute{Paper ID \ACCV14SubNumber}
+\author{Anonymous CVPR 2015 submission}
 
 \maketitle
 
@@ -77,8 +80,6 @@ Efforts to reduce the computational costs of finding nearest neighbours to featu
 A wealth of matching methods have focused instead on increasing the efficiency of local feature matching. \emph{Fast-Match} builds upon the foundation of \emph{Ratio-Match} introduced originally by Deriche et al.~\cite{deriche1994robust} and Baumberg~\cite{baumberg2000reliable} even though Lowe is usually credited for introducing it~\cite{lowe2004sift}. They both propose using the ratio of the similarity of the best to second best match of a given point to evaluate how unique it is. Their finding has later been tested by several independent teams, all concluding that thresholding based on this ratio is generally superior to thresholding based on similarity or returning all nearest neighbours \cite{lowe2004sift,mikolajczyk2005performance,moreels2007evaluation,rabin2009statistical}.
 
 Brown and Lowe \cite{brown2005multi} extend ratio match to deal with a set of images by using not the ratio of the best and second best match, but the average ratio of the best and the average of second best matches across a set of images.  Rabin et al.\ \cite{rabin2009statistical} try to enhance descriptor matching by looking at the statistical distribution of local features in the matched images, and only return a match when such a correspondence would not occur by mere chance. Finally, Arnfred et al.\ generalize \emph{Ratio-Match} to make use of both of the matched images to provide a more accurate evaluation of the uniqueness of a match \cite{arnfred2013mirror}.
-
-Another inspiration for the design of \emph{Fast-Match} is \emph{Patch-Match} as introduced by Barnes et al.~\cite{barnes2009patchmatch}. Like \emph{Fast-Match}, \emph{Patch-Match} is an iterative algorithm for fast image matching, but unlike \emph{Fast-Match}, which uses sparse local image features, \emph{Patch-Match} is designed for dense image features. It works by randomly creating a set of matches from both images and then iteratively improving it.
 
 For sparse local image features many solutions have combined \emph{Ratio-Match} with various geometric constraints to improve matching. These constraints are based on assumptions regarding the transformation between the \emph{query} and \emph{target images}. A commonly used example is \emph{RANSAC} applied to feature matching where matches are chosen from a pool of candidates according to how well they approximate a global epipolar geometry \cite{fischler1981ransac,torr2000mlesac,szeliski2010}. Similar global angular and distance constraints can be used to filter a set of matches as shown in \cite{kim2008efficient,schmid1997local}. Finally the problem of feature matching can be modelled as a graph matching problem where each feature is a vertex, and edge values correspond to a geometric relation between two features as demonstrated in \cite{torresani2008feature,yarkony2010covering,cho2010reweighted}. For cases that require more flexibility such as scenes with moving elements and non-planar perspective change Pairwise constraints provide an alternative to the more rigid global constraints. Introduced by Leordeanu and Herbert \cite{leordeanu2005spectral}, pairwise constraints work by applying a geometric constraint across matches on a pairwise basis, attempting to minimize the pairwise error. This approach has later been adopted by Pang et al.\ but made scale invariant and more efficient by using a voting scheme \cite{yuan2012efficient,pang2012scale}. Similarly we can cluster matches together based on a geometric constraint and treat each cluster as a separate case \cite{cho2009feature,wu2011robust}. An interesting application of this principle is demonstrated by Chen et al.\ who iteratively use a Hough transform to cluster matches using angular constraints \cite{chen2013robust}.
 
@@ -135,7 +136,12 @@ We a \emph{general} and a \emph{retrieval} variation of the algorithm. The latte
 \subsection{Initiating Seeds}
 \label{seeds}
 %
-Depending on the scenario, several strategies can be used to obtain a set of initial seed matches. For the case of matching a pair of two images we can get a rough group of seed matches by matching the thumbnails of the two images with for example \emph{Ratio-Match}. However if we were matching images in a series, such as frames from a movie we could instead make use of a subset of the matches from the last frame to seed \emph{Fast-Match} on the next. In practice we have found it efficient to resize both images to thumbnails of $300\times 300$ pixels and use ratio match to obtain a set of matches and ratios that we then threshold with the confidence threshold $\tau$ to obtain the initial seed matches.
+Depending on the scenario, several strategies can be used to obtain a
+set of initial seed matches. In practice we have found it efficient to
+resize both images to thumbnails and use
+\emph{Ratio-Match} to obtain a set of matches and ratios that we then
+threshold with the confidence threshold $\tau$ to obtain the initial
+seed matches. The thumbnails created need to be sized so they on one hand ensure that objects of interest are still detectable by a keypoint detector while on the other remain small to ensure that we find matches efficiently. We determine empirically that a thumbnail size of $300\times300$ pixels maintains a good balance between speed and accuracy. We found this size to be independent of the original image size as long as we are matching images that are bigger than one megapixel.
 
 \subsection{Collecting Matches and Computing Confidence}
 \label{collection}
@@ -144,7 +150,7 @@ If a seed match yields a connection between two points $p_q$ in the \emph{query 
 
 Lowe and others have shown that the distance between two SIFT descriptors is much less indicative of a true correspondence than the ratio between the best and second best match \cite{lowe2004sift,mikolajczyk2005performance,moreels2007evaluation,rabin2009statistical}. This ratio is more formally defined as follows: If we let $f_q$ be a feature in the \emph{query image} and $f_t, f_b$ be the two nearest neighbours of $f_q$ in the \emph{target image} then the ratio $r$ is defined as follows:
 \begin{align*}
-    r &= %\text{r}(f_{q}, (f_t, f_b)) \\
+    r %\text{r}(f_{q}, (f_t, f_b)) \\
         &= \frac{d(f_{q}, f_{t})}{d(f_{q}, f_{b})}.
 \end{align*}
 Here $d(f_i,f_j)$ is the distance between the features $f_i$ and $f_j$. For SIFT this is the Euclidean distance. The distance between two feature points is greater when the feature points resemble each other less. For this reason we have higher confidence in a match with a low $r$-value. Using $r$ as a measure of match confidence presumes that we expect each feature in the \emph{target image} to have at most one true correspondence in the \emph{target image}. Intuitively if we try to find a match for a feature $f_i$ in an image that does not have any true correspondences, then we would expect the two closest neighbours to be roughly equally well matched with $f_i$. For this reason we attribute high confidence to matches where the closest neighbour is dramatically closer to $f_i$ than the second closest neighbour and discard the rest.
@@ -201,7 +207,9 @@ The noteworthy part of this result is that for the \emph{retrieval} variation we
 \section{Experimental Setup}
 \label{experiments}
 %
-We evaluate \emph{Fast-Match} over 3024 image pairs featuring various 3D objects at different angles to measure precision and recall, as well as two pairs of images with high pixel counts to measure performance in terms of speed. We compare the algorithm to the standard \emph{Ratio-Match} \cite{lowe2004sift} as well as the newer \emph{Mirror-Match} \cite{arnfred2013mirror}. These two algorithms were selected because they are magnitudes faster than the fastest geometric algorithms while at the same time providing robust matches.
+To evaluate \emph{Fast-Match} on three sets of data. We use a dataset of 3024 image pairs featuring various 3D objects at different angles and lighting conditions to measure matching performance for real life objects when lighting and perspective changes. To evaluate the performance of \emph{Fast-Match} when only part of (or none of) the scene is shared between an image pair we conduct experiments on 400 random crops with different degree of image overlap taken from 4 image pairs, creating a challenging test set where large part of the images consists of background clutter similar in nature to the subject being matched. Finally we time the algorithm on two pairs of images with high pixel counts to measure performance in terms of speed. 
+
+We compare the algorithm to the standard \emph{Ratio-Match} \cite{lowe2004sift} as well as the newer \emph{Mirror-Match} \cite{arnfred2013mirror}. We exclude the geometric algorithms discussed in related works from comparison because even the fastest cases are two to three magnitudes slower than \emph{Ratio-Match} and as such are too time consuming to use when matching features in large images. Both \emph{Ratio-Match} and \emph{Mirror-Match} however have shown good results in matching applications while both being fast enough to compare on larger images. 
 
 \subsection{Evaluation of Fast-Match on 3D Objects}
 \label{3dobjects}
@@ -295,15 +303,100 @@ The 3D Objects dataset by Moreels and Perona \cite{moreels2007evaluation} allows
 
 To validate matches, Moreels and Perona propose a method using epipolar constraints \cite[p.266]{moreels2007evaluation}.  According to their experiments, these constraints are able to identify true correspondences with an error rate of $2\%$. We use their proposed method to generate the ground truth for the evaluation of our framework.
 
-To compute the total number of possible true correspondences, we take each feature in a \emph{query image} and count how many of them have a feature in the \emph{target image} which would satisfy the epipolar constraints. When using this dataset, features with no correspondences were not included in the set of features for testing, so as to avoid matching non-moving background and foreground objects.
+To compute the total number of possible true correspondences, we take each feature in a \emph{query image} and count how many of them have a feature in the \emph{target image} which would satisfy the epipolar constraints. To avoid matching non-moving background and foreground objects we excluded features with no correspondences from being matched. This was necessary because a relatively small number of actual true correspondences between folds in the background material were mistakenly counted as false positives when evaluated which impacted the precision of test in particular on cases with few true correspondences. In practice only few feature points were excluded for this reason.
 
-We evaluate all matching algorithms from our framework on the 3D Objects dataset by matching images at different angular intervals. For each object we pick the \emph{query} image as the image taken at 10 degrees rotation for calibration stability.  We then match this image with the same object turned an additional $\Delta$ degrees, $\Delta \in \{5, 10, \ldots, 60\}$.  For every angle interval we compare images taken under 3 different lighting conditions as provided by the dataset. We include all objects in the database for which photos at 5 degree angle intervals are available except for the ``Rooster'' and ``Sponge'' objects due to image irregularities.
+We evaluate all matching algorithms from our framework on the 3D Objects dataset by matching images at different angular intervals. For each object we pick the \emph{query} image as the image taken at 10 degrees rotation for calibration stability.  We then match this image with the same object turned an additional $\Delta$ degrees, $\Delta \in \{5, 10, \ldots, 60\}$.  For every angle interval we compare images taken under 3 different lighting conditions as provided by the dataset. We include all objects in the database for which photos at 5 degree angle intervals are available except for the ``Rooster'' and ``Sponge'' objects due to image irregularities. For each angle this means that a total of 252 image pairs are matched. We calculate the result these pairs using a weighted average based on the number of actual correspondences for each pairs. This ensures that image pairs that are more difficult to match are not contributing less to the end result because less actual matches would be found.
 
-\subsection{Configuration of \emph{Fast-Match}}
+\subsection{Evaluation of Fast-Match on partially overlapping scenes}
+\label{patches}
 %
-The central parameters of \emph{Fast-Match} are the confidence threshold $\tau$ for selecting seed matches and the final confidence threshold applied to the total set of matches. For the experiments on the 3D Objects we let $\tau = 0.9$ and created precision/recall plots by varying the confidence threshold over the final set of matches. 
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[t]{0.20\columnwidth}
+        \centering
+        \includegraphics[width=1\columnwidth]{images/acr/boat1}
+    \end{subfigure}%
+    ~ %
+    \begin{subfigure}[t]{0.20\columnwidth}
+        \centering
+        \includegraphics[width=1\columnwidth]{images/acr/graf1}
+    \end{subfigure}%
+    ~ %
+    \begin{subfigure}[t]{0.24\columnwidth}
+        \centering
+        \includegraphics[width=1\columnwidth]{images/acr/bark1}
+    \end{subfigure}%
+    ~ %
+    \begin{subfigure}[t]{0.23\columnwidth}
+        \centering
+        \includegraphics[width=1\columnwidth]{images/acr/wall1}
+    \end{subfigure}%
+    \vspace{1.5 mm}
 
-To achieve a good balance between speed and robustness we let the region in which we extract features be a square with a side length of 90 pixels. On empirical tests we found that anything smaller would result in decreased performance while much bigger regions would decrease speed. The 90 pixel window is split in to nine smaller squares (see also Figure~\ref{fig:exploration}). When a seed match falls in any of these squares we match only the features within the smaller square. We let both the regions and the smaller squares overlap each other at all edges with 25 pixels in order to capture feature points lying close to an edge. For the image we have already cached we find all features within a radius of 50 pixels of the seed match.
+    \begin{subfigure}[t]{0.20\columnwidth}
+        \centering
+        \includegraphics[width=1\columnwidth]{images/acr/boat4}
+    \end{subfigure}%
+    ~ %
+    \begin{subfigure}[t]{0.20\columnwidth}
+        \centering
+        \includegraphics[width=1\columnwidth]{images/acr/graf3}
+    \end{subfigure}%
+    ~ %
+    \begin{subfigure}[t]{0.24\columnwidth}
+        \centering
+        \includegraphics[width=1\columnwidth]{images/acr/bark4}
+    \end{subfigure}%
+    ~ %
+    \begin{subfigure}[t]{0.21\columnwidth}
+        \centering
+        \includegraphics[width=1\columnwidth]{images/acr/wall6}
+    \end{subfigure}%
+    ~
+    \vspace{1.5 mm}
+
+    \caption{Four image pairs from the Graffiti dataset by Mikolajczyk et al.\ \cite{mikolajczyk2005performance}. From left to right the images are `Boat', `Graf', `Bark' and `Wall'.}
+    \label{fig:patch_objects}
+\end{figure}
+To evaluate how well \emph{Fast-Match} handles partially overlapping scenes we make use of four images from the Graffiti dataset by Mikolajczyk et al.\ \cite{mikolajczyk2005performance} as displayed in Figure\ \ref{fig:patch_objects} all featuring challenging perspective change. For each of the four image pairs we generate a hundred pairs of smaller crops each crop randomly positioned within the original image. This process ensures that image pairs that does not contain any overlap in scene are still visually similar, making it more challenging for a matching algorithm to avoid false positives, i.e. matching local image features that are not true correspondences.
+
+In practice the amount of overlap between pairs in a test set will 
+depend on the overlap and viewpoint change in the source image pair.  To 
+give a rough idea, Table~\ref{table:overlap} shows the overlap of patch 
+pairs created from images 1 and 3 of the \emph{Graf} image.
+
+\begin{table}[htb]
+\caption{Overlap in the set of 100 patch pairs created from the `Graf' image pair (Figure~\ref{fig:patch_objects}).}
+\label{table:overlap}
+	\centering
+%	\small
+\begin{tabular}{r*{3}{r}}
+\hline
+	Amount of overlap: & 0\% & $< 50$\% & $> 50$\%  \\
+	\noalign{\smallskip}
+	%
+	Number of patch pairs: & 21 & 54 & 25 \\
+	\hline
+\end{tabular}
+\end{table}
+
+Given a potential match between two pixels $p_1$ and 
+$p_2$, $m = \left(p_1, p_2\right)$, and a homography $H$ relating the two images $I_1$ and $I_2$, we 
+can calculate if $m$ is an inlier by checking if the two points satisfy the following criteria:
+\begin{equation*}
+\left\vert H p_1 - p_2 \right\vert + \left\vert H^{-1}p_2 - p_1 \right\vert < d_{\max}
+\end{equation*}
+That is, the distance between $p_1$ translated to $I_2$ and $p_2$ 
+\emph{plus} the distance between $p_2$ translated to $I_1$ should be 
+less than a certain threshold (we use $d_{\max}=5$ pixels here).
+
+As with the 3D Objects we accumulate results across the hundred image crop pairs by using an average weighted by the amount of true correspondences between each cropped pair. This ensures that difficult to match and trivial image pairs have an equal impact on the evaluation result despite the difficult image pairs yielding far less actual matches.
+
+\subsection{Configuration of Fast-Match}
+%
+The central parameters of \emph{Fast-Match} are the confidence threshold $\tau$ for selecting seed matches and the final confidence threshold applied to the total set of matches. For the experiments we let $\tau = 0.9$ and created precision/recall plots by varying the confidence threshold over the final set of matches. 
+
+To achieve a good balance between speed and robustness we let the region in which we extract features be a square window with a side length of 90 pixels. From empirical tests we found that this number works well with the SIFT feature descriptor, but for other descriptors different numbers might lead to better performance. The window is split in to nine smaller squares (see also Figure~\ref{fig:exploration}). When a seed match falls in any of these squares we match only the features within the smaller square. We let both the regions and the smaller squares overlap each other at all edges with 25 pixels in order to capture feature points lying close to an edge. For the image we have already cached we find all features within a radius of 50 pixels of the seed match.
 
 \section{Results}
 \label{results}
@@ -311,7 +404,8 @@ To achieve a good balance between speed and robustness we let the region in whic
 \begin{figure}[t]
 \centering
 \includegraphics[width=1\columnwidth]{images/grid_match_all}
-\caption{Results for the 3D Objects dataset. Each plot contains data accumulated from 84 objects photographed under 3 different lighting conditions.}
+\caption{Results for the 3D Objects dataset. Each plot contains the
+average precision and recall over 84 objects photographed under 3 different lighting conditions weighted over the number of true correspondences for each pair.}
 \label{fig:all_objects}
 \end{figure}
 
@@ -321,10 +415,30 @@ At low angular differences all algorithms show similar performance at low recall
 
 The high recall rates of \emph{Fast-Match} are partially explained by the fact that we can allow our confidence thresholds to be more lenient when we already know that we are likely to find true correspondences in the regions that we are matching. However, lenient thresholds can easily impact the matching speed, so in practical situations we usually have to choose between matching fast and precisely, or more slowly with higher recall. 
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=1\columnwidth]{images/patches_all_horz}
+\caption{Results for the Graffiti dataset. Each plot contains the
+average result over 100 semi overlapping image patches based on the same
+two images weighted over the number of true correspondences for each pair.}
+\label{fig:patches}
+\end{figure}
+
+In Figure~\ref{fig:patches} we see the performance of the three different matching methods over 400 crop pairs based on four image pairs. As for the 3D Objects the results are shown in a precision-recall plot weighted by the number of possible true correspondences for the individual crop pairs.
+
+At low recall we see a similar performance across all algorithms, but as the algorithms return more matches, \emph{Fast-Match} shows drastically better precision at similar recall levels than \emph{Mirror-Match} and \emph{Ratio-Match}. While this difference is more noticeable in the case of the `Bark' and `Boat' images, the `Graf' and `Wall' also see a drastic improvement in recall but as precision is lower in general for these two images the effect is less visible.
+
+For all four image pairs we see a precision dip at very low recall which is explained by the presence of image crop pairs with no or little overlap. When matching these pairs we might often find matches even though there are no or few possible true correspondences which in effect negatively impacts the results at very low recall rates.
+
 \begin{figure}[tb]
     \centering
     \includegraphics[width=1\columnwidth]{images/timings}
-    \caption{The duration in seconds of different variations of \emph{Fast-Match} and \emph{Ratio-Match}. The top plot shows results for two 10~MPixel images two 3~Mpixel images is used for the comparison at the bottom. From the left, the first two results presume a precached image while the rest do not require knowing any inputs beforehand. The image pairs used be seen in Figure~\ref{fig:match_example}}
+    \caption{The duration in seconds of different variations of
+    \emph{Fast-Match} and \emph{Ratio-Match}. The top plot shows results
+for two 10~MPixel images two 3~Mpixel images is used for the comparison
+at the bottom. From the left, the first two results presume a precached
+image while the rest do not require knowing any inputs beforehand. The
+image pairs used can be seen in Figure~\ref{fig:match_example}}
     \label{fig:timings}
 \end{figure}
 
@@ -340,9 +454,9 @@ Figure~\ref{fig:match_example} shows the result from matching the pair of three 
 
 We have introduced \emph{Fast-Match} in two forms, a general and a retrieval variation. The retrieval variation assumes that we know one of the images that we are matching ahead of time in order to pre-cache feature points. The general variation has no assumptions and performs the pre-caching of feature points online instead. 
 We have proven that while the general variation has a computational complexity of $O(n \log n)$ with $n$ being the number of feature points, the retrieval variation will on average run in $O(n)$.
-From experiments on large images we have shown that \emph{Fast-Match} can be a magnitude faster than \emph{Ratio-Match} while providing comparable results. We further compared \emph{Fast-Match} to \emph{Ratio-Match} and \emph{Mirror-Match} using images of rotated 3D objects to demonstrate that \emph{Fast-Match} outperforms the other algorithms significantly over 3024 image pairs and in most cases doubles the matching precision at similar recall rates.
+From experiments on large images we have shown that \emph{Fast-Match} can be a magnitude faster than \emph{Ratio-Match} while providing comparable results. We further compared \emph{Fast-Match} to \emph{Ratio-Match} and \emph{Mirror-Match} using images of rotated 3D objects to demonstrate that \emph{Fast-Match} outperforms the other algorithms significantly over 3024 image pairs and in most cases doubles the matching precision at similar recall rates. We show that these results hold true for matching cases featuring partial or no overlap by comparing \emph{Fast-Match} on 400 crop pairs of planar scenes.
 \emph{Fast-Match} is particularly applicable in cases where we are interested in matching one image to multiple large images, in which case we can quickly pre-cache the image and use this data for each of the other images.
 
-\bibliographystyle{splncs}
+\bibliographystyle{ieee}
 \bibliography{bibliography}
 \end{document}
