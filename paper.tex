@@ -35,23 +35,14 @@
 \def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
+\begin{document}
 % Pages are numbered in submission mode, and unnumbered in camera-ready
 \ifcvprfinal\pagestyle{empty}\fi
-%===========================================================
-\begin{document}
-%\pagestyle{headings}
-
-% TODO: Insert submission number
-\def\ACCV14SubNumber{***}  % Insert your submission number here
-
-%===========================================================
 \title{Fast-Match: Fast and robust feature matching on large images}
 
 \author{Anonymous CVPR 2015 submission}
 
 \maketitle
-
-%===========================================================
 
 \begin{abstract}
     Both consumer cameras and camera phones produce images that often exceed 10 megapixels. Yet computing and matching local features in images of this size can easily take more than twenty seconds using fast matching algorithms. This is much too slow for interactive applications and much too expensive for large scale image operations. We introduce \emph{Fast-Match}, an algorithm designed to swiftly match large images without compromising on matching precision or recall. \emph{Fast-Match} derives its speed from only computing features in those parts of the image that can be confidently matched. We show that \emph{Fast-Match} is an order of magnitude faster than \emph{Ratio-Match}, yet often doubles the precision on difficult to match image pairs at equal recall. In addition we prove that when one image is known in advance, \emph{Fast-Match} can achieve linear performance $O(n)$ in the number of feature points $n$.
