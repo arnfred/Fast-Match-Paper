@@ -1,0 +1,222 @@
+\begin{thebibliography}{10}\itemsep=-1pt
+
+\bibitem{arnfred2013mirror}
+J.~T. Arnfred, S.~Winkler, and S.~S{\"u}sstrunk.
+\newblock {Mirror Match}: Reliable feature point matching without geometric
+  constraints.
+\newblock In {\em Proc. IAPR Asian Conference on Pattern Recognition (ACPR)},
+  pages 256--260, 2013.
+
+\bibitem{baumberg2000reliable}
+A.~Baumberg.
+\newblock Reliable feature matching across widely separated views.
+\newblock In {\em Proc. Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, volume~1, pages 774--781, 2000.
+
+\bibitem{bay2006surf}
+H.~Bay, T.~Tuytelaars, and L.~Van~Gool.
+\newblock {SURF}: Speeded up robust features.
+\newblock In {\em Proc. European Conference on Computer Vision (ECCV)}, pages
+  404--417, 2006.
+
+\bibitem{beis1997shape}
+J.~S. Beis and D.~G. Lowe.
+\newblock Shape indexing using approximate nearest-neighbour search in
+  high-dimensional spaces.
+\newblock In {\em Proc. Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 1000--1006. IEEE, 1997.
+
+\bibitem{brown2005multi}
+M.~Brown, R.~Szeliski, and S.~Winder.
+\newblock Multi-image matching using multi-scale oriented patches.
+\newblock In {\em Proc. Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, volume~1, pages 510--517, 2005.
+
+\bibitem{calonder2010brief}
+M.~Calonder, V.~Lepetit, C.~Strecha, and P.~Fua.
+\newblock {BRIEF}: binary robust independent elementary features.
+\newblock In {\em Proc. European Conference on Computer Vision (ECCV)}, pages
+  778--792, 2010.
+
+\bibitem{chen2013robust}
+H.-Y. Chen, Y.-Y. Lin, and B.-Y. Chen.
+\newblock Robust feature matching with alternate hough and inverted hough
+  transforms.
+\newblock In {\em Proc. Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 2762--2769. IEEE, 2013.
+
+\bibitem{cho2009feature}
+M.~Cho, J.~Lee, and K.~M. Lee.
+\newblock Feature correspondence and deformable object matching via
+  agglomerative correspondence clustering.
+\newblock In {\em Proc. International Conference on Computer Vision (ICCV)},
+  pages 1280--1287. IEEE, 2009.
+
+\bibitem{cho2010reweighted}
+M.~Cho, J.~Lee, and K.~M. Lee.
+\newblock Reweighted random walks for graph matching.
+\newblock In {\em Proc. European Conference on Computer Vision (ECCV)}, pages
+  492--505. Springer, 2010.
+
+\bibitem{das2008event}
+M.~Das, J.~Farmer, A.~Gallagher, and A.~Loui.
+\newblock Event-based location matching for consumer image collections.
+\newblock In {\em Proc. Content-based Image and Video Retrieval (CIVR)}, pages
+  339--348, Niagara Falls, ON, 2008.
+
+\bibitem{del2010local}
+A.~Del~Bimbo, F.~Franco, and F.~Pernici.
+\newblock Local shape estimation from a single keypoint.
+\newblock In {\em Proc. Computer Vision and Pattern Recognition
+  Workshops(CVPRW)}, pages 23--28. IEEE, 2010.
+
+\bibitem{deriche1994robust}
+R.~Deriche, Z.~Zhang, Q.-T. Luong, and O.~Faugeras.
+\newblock Robust recovery of the epipolar geometry for an uncalibrated stereo
+  rig.
+\newblock In {\em Proc. European Conference on Computer Vision (ECCV)}, pages
+  567--576, 1994.
+
+\bibitem{dong2011efficient}
+W.~Dong, C.~Moses, and K.~Li.
+\newblock Efficient k-nearest neighbor graph construction for generic
+  similarity measures.
+\newblock In {\em Proc. International Conference on World Wide Web (IW3C2)},
+  pages 577--586. ACM, 2011.
+
+\bibitem{fischler1981ransac}
+M.~A. Fischler and R.~C. Bolles.
+\newblock Random sample consensus: a paradigm for model fitting with
+  applications to image analysis and automated cartography.
+\newblock {\em Communications of the ACM}, 24(6):381--395, 1981.
+
+\bibitem{heinly2012comparative}
+J.~Heinly, E.~Dunn, and J.-M. Frahm.
+\newblock Comparative evaluation of binary features.
+\newblock In {\em Proc. European Conference on Computer Vision (ECCV)}, pages
+  759--773, 2012.
+
+\bibitem{ke2004pca}
+Y.~Ke and R.~Sukthankar.
+\newblock \textsc{PCA-SIFT}: A more distinctive representation for local image
+  descriptors.
+\newblock In {\em Proc. Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, volume~2, pages II--506. IEEE, 2004.
+
+\bibitem{kim2008efficient}
+J.~Kim, O.~Choi, and I.~S. Kweon.
+\newblock Efficient feature tracking for scene recognition using angular and
+  scale constraints.
+\newblock In {\em Proc. IEEE/RSJ International Conference on Intelligent Robots
+  and Systems (IROS)}, pages 4086--4091, Nice, France, 2008.
+
+\bibitem{leordeanu2005spectral}
+M.~Leordeanu and M.~Hebert.
+\newblock A spectral technique for correspondence problems using pairwise
+  constraints.
+\newblock In {\em Proc. Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, volume~2, pages 1482--1489, San Diego, CA, 2005.
+
+\bibitem{leutenegger2011brisk}
+S.~Leutenegger, M.~Chli, and R.~Y. Siegwart.
+\newblock {BRISK}: Binary robust invariant scalable keypoints.
+\newblock In {\em Proc. International Conference on Computer Vision (ICCV)},
+  pages 2548--2555. IEEE, 2011.
+
+\bibitem{li2008comprehensive}
+J.~Li and N.~M. Allinson.
+\newblock A comprehensive review of current local features for computer vision.
+\newblock {\em Neurocomputing}, 71(10):1771--1787, 2008.
+
+\bibitem{lowe1999object}
+D.~G. Lowe.
+\newblock Object recognition from local scale-invariant features.
+\newblock In {\em Proc. International Conference on Computer Vision (ICCV)},
+  volume~2, pages 1150--1157. Ieee, 1999.
+
+\bibitem{lowe2004sift}
+D.~G. Lowe.
+\newblock Distinctive image features from scale-invariant keypoints.
+\newblock {\em International Journal on Computer Vision}, 60(2):91--110, 2004.
+
+\bibitem{mikolajczyk2005performance}
+K.~Mikolajczyk and C.~Schmid.
+\newblock A performance evaluation of local descriptors.
+\newblock {\em IEEE Trans. Pattern Analysis and Machine Intelligence},
+  27(10):1615--1630, 2005.
+
+\bibitem{moreels2007evaluation}
+P.~Moreels and P.~Perona.
+\newblock Evaluation of features detectors and descriptors based on {3D}
+  objects.
+\newblock {\em International Journal on Computer Vision}, 73(3):263--284, 2007.
+
+\bibitem{muja2009fast}
+M.~Muja and D.~G. Lowe.
+\newblock Fast approximate nearest neighbors with automatic algorithm
+  configuration.
+\newblock In {\em Proc. International Joint Conference on Computer Vision,
+  Imaging and Computer Graphics Theory and Applications (VISAPP)}, pages
+  331--340, 2009.
+
+\bibitem{pang2012scale}
+Y.~Pang, M.~Shang, Y.~Yuan, and J.~Pan.
+\newblock Scale invariant image matching using triplewise constraint and
+  weighted voting.
+\newblock {\em Neurocomputing}, 83:64--71, 2012.
+
+\bibitem{puerto2011adaptive}
+G.~A. Puerto~Souza, M.~Adibi, J.~A. Cadeddu, and G.~L. Mariottini.
+\newblock Adaptive multi-affine (ama) feature-matching algorithm and its
+  application to minimally-invasive surgery images.
+\newblock In {\em Proc. Intelligent Robots and Systems (IROS)}, pages
+  2371--2376. IEEE, 2011.
+
+\bibitem{rabin2009statistical}
+J.~Rabin, J.~Delon, and Y.~Gousseau.
+\newblock A statistical approach to the matching of local features.
+\newblock {\em SIAM Journal on Imaging Sciences}, 2(3):931--958, 2009.
+
+\bibitem{schmid1997local}
+C.~Schmid and R.~Mohr.
+\newblock Local grayvalue invariants for image retrieval.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  19(5):530--535, 1997.
+
+\bibitem{szeliski2010}
+R.~Szeliski.
+\newblock {\em Computer Vision: Algorithms and Applications}.
+\newblock Springer, 2010.
+
+\bibitem{torr2000mlesac}
+P.~H.~S. Torr and A.~Zisserman.
+\newblock \textsc{MLESAC}: A new robust estimator with application to
+  estimating image geometry.
+\newblock {\em Computer Vision and Image Understanding}, 78(1):138--156, 2000.
+
+\bibitem{torresani2008feature}
+L.~Torresani, V.~Kolmogorov, and C.~Rother.
+\newblock Feature correspondence via graph matching: Models and global
+  optimization.
+\newblock In {\em Proc. European Conference on Computer Vision (ECCV)}, pages
+  596--609. Springer, 2008.
+
+\bibitem{wu2011robust}
+L.~Wu, Y.~Niu, H.~Zhang, H.~Zhu, and L.~Shen.
+\newblock Robust feature point matching based on local feature groups {(LFGs)}
+  and relative spatial configuration.
+\newblock {\em Journal of Computational Information Systems}, 7(9):3235--3244,
+  2011.
+
+\bibitem{yarkony2010covering}
+J.~Yarkony, C.~Fowlkes, and A.~Ihler.
+\newblock Covering trees and lower-bounds on quadratic assignment.
+\newblock In {\em Proc. Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 887--894. IEEE, 2010.
+
+\bibitem{yuan2012efficient}
+Y.~Yuan, Y.~Pang, K.~Wang, and M.~Shang.
+\newblock Efficient image matching using weighted voting.
+\newblock {\em Pattern Recognition Letters}, 33(4):471--475, 2012.
+
+\end{thebibliography}
